@@ -1,0 +1,45 @@
+spring:
+  jib:
+    from:
+      auth:
+        username: ankyeongeun
+        password: wkehd4218*
+    container:
+      jvmFlags: -Xms512m -Xmx512m
+  freemarker:
+    cache: false
+    template-loader-path: classpath:/templates
+    suffix: .ftlh
+  datasource:
+    url: jdbc:postgresql://localhost:5432/chat
+    username: chat
+    password: chat
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    configFile: flyway.conf
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+  jmx:
+    enabled: true
+    default-domain: myapp
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: chat-group
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest

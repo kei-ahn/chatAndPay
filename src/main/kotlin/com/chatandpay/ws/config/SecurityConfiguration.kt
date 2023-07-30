@@ -65,6 +65,7 @@ class SecurityConfiguration {
 
     @Bean
     fun registeredClientRepository(): RegisteredClientRepository {
+        // 여기는 db로 검증되어야 함
         val registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
             .clientName("kei")
             .clientId("kei")

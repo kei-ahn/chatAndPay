@@ -242,14 +242,9 @@
             },
 
             searchMessage: function() {
-                // 검색어에 해당하는 메시지를 서버로부터 받아와 화면에 표시하는 로직을 추가할 수 있습니다.
-                // 검색 로직을 구현하려면 서버 쪽과 API를 통해 검색 결과를 요청하고 받아와야 합니다.
-                // 이 예제에서는 검색어만을 담는 변수인 this.searchKeyword만 사용하고 있으므로,
-                // 실제로 검색 기능을 추가하려면 서버 API와의 통신 등을 구현해야 합니다.
-                console.log("검색어: " + this.searchKeyword);
-                // 여기에 검색 기능을 구현하는 로직을 추가하세요.
-                // 서버로 검색어를 전송하고, 검색 결과를 받아와서 messages 배열을 업데이트하거나
-                // 검색 결과를 따로 표시하는 방식으로 구현할 수 있습니다.
+                ws.send("/pub/chat/room/" + this.roomId + "/message" , {}, JSON.stringify({
+                    searchKeyword: this.searchKeyword
+                }));
             }
         }
     });

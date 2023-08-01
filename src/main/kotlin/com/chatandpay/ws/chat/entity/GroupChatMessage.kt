@@ -3,6 +3,7 @@ package com.chatandpay.ws.chat.entity
 import com.chatandpay.ws.chat.dto.GroupChatMessageDto
 import com.chatandpay.ws.utils.toEpochMillis
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.TextIndexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 
@@ -17,6 +18,7 @@ data class GroupChatMessage(
 
     var senderName: String,
 
+    @TextIndexed
     var message: String,
 
     var createdAt: Long = LocalDateTime.now().toEpochMillis()

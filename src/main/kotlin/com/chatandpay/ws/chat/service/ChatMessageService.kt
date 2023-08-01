@@ -7,17 +7,31 @@ import com.chatandpay.ws.chat.entity.GroupChatMessage
 import com.chatandpay.ws.chat.entity.PrivateChatMessage
 import com.chatandpay.ws.chat.repository.GroupChatMessageRepository
 import com.chatandpay.ws.chat.repository.PrivateChatMessageRepository
+import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.index.TextIndexDefinition
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.TextCriteria
 import org.springframework.stereotype.Service
 
 @Service
 class ChatMessageService (
     private val privateChatMessageRepository: PrivateChatMessageRepository,
-    private val groupChatMessageRepository:GroupChatMessageRepository
+    private val groupChatMessageRepository:GroupChatMessageRepository,
     ){
 
     fun savePrivateChatMessage(chatMessageDto: ChatMessageDto) {
         val chatMessage = PrivateChatMessage.create(chatMessageDto)
         privateChatMessageRepository.save(chatMessage)
+    }
+
+    fun saveEnterMessage() {
+
+    }
+
+
+    fun searchMessages(searchKeyword: String): List<PrivateChatMessage> {
+        return privateChatMessageRepository.findByMessageContaining(searchKeyword)
     }
 
     fun getChatMessagesByRoomId(chatMessageDto: ChatMessageDto):PrivateChatMessage {
@@ -37,8 +51,8 @@ class ChatMessageService (
 //        chatMessageDto.sequenceNumber = sequenceNumber?.plus(1)
         // 채팅방 기록이 없다면 최초 입장으로 파악 -> 입장했습니다 메시지 반환
 
-//        val chatMessage = PrivateChatMessage.create(chatMessageDto)
-//        privateChatMessageRepository.save(chatMessage)
+        val chatMessage = PrivateChatMessage.create(chatMessageDto)
+        privateChatMessageRepository.save(chatMessage)
 
 
         return PrivateChatMessage.createEnterMessage(chatMessageDto)

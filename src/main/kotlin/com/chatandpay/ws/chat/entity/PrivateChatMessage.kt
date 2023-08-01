@@ -3,6 +3,7 @@ package com.chatandpay.ws.chat.entity
 import com.chatandpay.ws.chat.dto.ChatMessageDto
 import com.chatandpay.ws.utils.toEpochMillis
 import org.bson.types.ObjectId
+import org.springframework.data.mongodb.core.index.TextIndexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -15,6 +16,8 @@ data class PrivateChatMessage(
 
     // 기존 속성들은 그대로 유지합니다
     var chatRoomId: String,
+
+    @TextIndexed
     val message: String,
     val senderName: String,
     val senderId: String,

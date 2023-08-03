@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <title>Websocket ChatRoom</title>
     <!-- Required meta tags -->
@@ -103,8 +103,8 @@
 
         <!-- Search bar -->
         <div class="search-bar">
-            <input type="text" class="form-control" v-model="searchKeyword" @keyup.enter="searchMessage" placeholder="대화를 검색하세요...">
-            <button class="btn btn-primary" @click="searchMessage">검색</button>
+            <input type="text" class="form-control" v-model="searchKeyword" v-on:keypress.enter="performSearch" placeholder="대화를 검색하세요...">
+            <button class="btn btn-primary" @click="performSearch">검색</button>
         </div>
 
         <div class="chat-messages">
@@ -192,12 +192,23 @@
             },
             recvMessage: function (recv) {
 
-                this.messages.unshift({
-                    "type": recv.type,
-                    "senderName": recv.senderName,
-                    "message": recv.message,
-                    "createdAt": recv.createdAt
-                });
+                if (Array.isArray(recv)) {
+                    for (let i = 0; i < recv.length; i++) {
+                        this.messages.unshift({
+                            "type": recv[i].type,
+                            "senderName": recv[i].senderName,
+                            "message": recv[i].message,
+                            "createdAt": recv[i].createdAt
+                        });
+                    }
+                } else {
+                    this.messages.unshift({
+                        "type": recv.type,
+                        "senderName": recv.senderName,
+                        "message": recv.message,
+                        "createdAt": recv.createdAt
+                    });
+                }
 
                 // createdAt 값으로 내림차순 정렬
                 this.messages.sort((a, b) => b.createdAt - a.createdAt);
@@ -240,12 +251,21 @@
                     clearInterval(intervalId);
                 }
             },
+performSearch: function() {
+        if (this.searchKeyword) { // 빈 검색어는 처리하지 않음
+            this.searchMessage();
+        }
+    },
+    searchMessage: function() {
+        ws.send("/pub/chat/room/" + this.roomId + "/message" , {}, JSON.stringify({
+            searchKeyword: this.searchKeyword
+        }));
+    }
 
-            searchMessage: function() {
-                ws.send("/pub/chat/room/" + this.roomId + "/message" , {}, JSON.stringify({
-                    searchKeyword: this.searchKeyword
-                }));
-            }
+
+
+
+
         }
     });
 

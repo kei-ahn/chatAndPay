@@ -38,8 +38,8 @@ class PrivateChatController(
     }
 
     @MessageMapping("/pub/chat/room/{roomId}/message")
-    @SendTo("/sub/chat/room/{roomId}/message")
-    fun searchMesage(@DestinationVariable roomId: String, payload:SearchKeywordDto): List<PrivateChatMessage> {
+    @SendTo("/sub/chat/room/{roomId}")
+    fun searchMesage(@DestinationVariable roomId: String, payload:SearchKeywordDto): List<PrivateChatMessage>? {
         println(payload.searchKeyword);
         return chatMessageService.searchMessages(payload.searchKeyword)
 

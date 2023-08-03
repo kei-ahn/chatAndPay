@@ -7,6 +7,7 @@ import com.chatandpay.ws.chat.entity.GroupChatMessage
 import com.chatandpay.ws.chat.entity.PrivateChatMessage
 import com.chatandpay.ws.chat.repository.GroupChatMessageRepository
 import com.chatandpay.ws.chat.repository.PrivateChatMessageRepository
+import com.chatandpay.ws.chat.repository.PrivateChatMessageRepositoryHelper
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.index.TextIndexDefinition
 import org.springframework.data.mongodb.core.query.Criteria
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service
 class ChatMessageService (
     private val privateChatMessageRepository: PrivateChatMessageRepository,
     private val groupChatMessageRepository:GroupChatMessageRepository,
+    private val privateChatMessageRepositoryHelper: PrivateChatMessageRepositoryHelper
     ){
 
     fun savePrivateChatMessage(chatMessageDto: ChatMessageDto) {
@@ -30,8 +32,10 @@ class ChatMessageService (
     }
 
 
-    fun searchMessages(searchKeyword: String): List<PrivateChatMessage> {
-        return privateChatMessageRepository.findByMessageContaining(searchKeyword)
+    fun searchMessages(searchKeyword: String): List<PrivateChatMessage>? {
+        val result =  privateChatMessageRepositoryHelper.findByMessageRegex(searchKeyword)
+        println(result)
+        return result
     }
 
     fun getChatMessagesByRoomId(chatMessageDto: ChatMessageDto):PrivateChatMessage {

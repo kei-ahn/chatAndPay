@@ -17,7 +17,7 @@ data class PrivateChatMessage(
     // 기존 속성들은 그대로 유지합니다
     var chatRoomId: String,
 
-    @TextIndexed
+//    @TextIndexed
     val message: String,
     val senderName: String,
     val senderId: String,

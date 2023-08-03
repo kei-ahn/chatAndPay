@@ -18,7 +18,7 @@ data class GroupChatMessage(
 
     var senderName: String,
 
-    @TextIndexed
+//    @TextIndexed
     var message: String,
 
     var createdAt: Long = LocalDateTime.now().toEpochMillis()
